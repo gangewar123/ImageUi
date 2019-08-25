@@ -15,17 +15,19 @@ export default class ImageRender extends Component {
             data: "",
             isLoading: true,
             onEndReached: true,
+            id:"",
+            pageNumber:1,
         };
     }
 
     componentDidMount() {
-        fetch('https://api.unsplash.com/photos/?client_id=27188885043579c212fdbf88c97812be03382d3a0e2b2f986dfa2b0719897d0a')
+        fetch('https://api.unsplash.com/photos/?client_id=27188885043579c212fdbf88c97812be03382d3a0e2b2f986dfa2b0719897d0a&page=1')
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log("data from api,=>", responseJson);
                 var imagedata = [];
                 responseJson.forEach(element => {
-                    imagedata.push(element.urls)
+                    imagedata.push(element)
 
                 });
                 console.log("data image is=>", imagedata)
@@ -48,13 +50,13 @@ export default class ImageRender extends Component {
     loadMoreData() {
 
         console.log("control is comming or not")
-        fetch('https://api.unsplash.com/photos/?client_id=27188885043579c212fdbf88c97812be03382d3a0e2b2f986dfa2b0719897d0a')
+        fetch('https://api.unsplash.com/photos/?client_id=27188885043579c212fdbf88c97812be03382d3a0e2b2f986dfa2b0719897d0a&page=2')
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log("data from api,=>", responseJson);
                 var imagedata = [];
                 responseJson.forEach(element => {
-                    imagedata.push(element.urls)
+                    imagedata.push(element)
 
                 });
                 console.log("data image is=>", imagedata)
@@ -74,19 +76,30 @@ export default class ImageRender extends Component {
 
         return this.state.data.map((element) => {
             return ({
-                uri: element.thumb
+                uri: element.urls.thumb,
+                id:element.id,
+                user:element.user,
+                likes:element.likes
             })
 
         });
     }
 
-    _onLongPress=(data)=>{
+    _onLongPress=(index,id,user)=>{
+        this.setState({id:index})
 
-        console.log("this is one");
+        console.log("this is one",user);
         return (
             <overlayComponent/>
         );
 
+    }
+    renderCostomeComponent(){
+        return (
+           <Image >
+               <Text>hello</Text>
+           </Image>
+        )
     }
     render() {
         const { search, data } = this.state;
@@ -100,30 +113,36 @@ export default class ImageRender extends Component {
                         value={search}
                     />
                     <MasonryList
-                        // rerender={true}
+                        
                         
                         images={this.renderImage()}
+                        // rerender={true}
 
                         masonryFlatListColProps={{onEndReached: this.loadMoreData}}
                         onEndReachedThreshold={0.5}
-                        onLongPressImage = {this._onLongPress}
+                        onLongPressImage = {(item, index)=>this._onLongPress(index,item.id,item.user)}
+
+                        // completeCustomComponent={({  user, style={width:100,height:100,margin:5}, user }) => <Text>{user.id}</Text>}
+                        // completeCustomComponent= {
+                        //     this.state.id?
+                            
+                        //     (item, style={width:100,height:100,margin:5},index) =>index==this.state.id? <View style={{flex:1,backgroundColor:"transparent"}}>
+                        //     <View>
+                        //     <Text>hellpo</Text>
+                        //     </View>
+                        // </View>:null:null }
                         
-                    //     renderIndividualHeader={(data) => {
-                    //     return (
-                    //         <TouchableWithoutFeedback
-                    //             onPress={() => Linking.openURL("https://luehangs.site")}>
-                    //             <View style={[ {
-                    //                 width: 100,
-                    //                 margin:12
-                    //             }]}>
-                    //                 <Image
-                    //                     source={{ uri: "https://luehangs.site/images/lue-hang2018-square.jpg" }}
-                    //                     />
-                    //                 <Text >{data.title}</Text>
-                    //             </View>
-                    //         </TouchableWithoutFeedback>
-                    //     );
-                    // }}
+                        renderIndividualHeader={(data,index)=>  {return  this.state.id==index ?(<View style={{position:"absolute",height:"100%",width:"100%",left:0,justifyContent:"center",alignItems:"center"}}><View style={{flexDirection:"row",justifyContent:"center",alignItems:"center",borderWidth:1,borderRadius:4}}>
+                            <View style={{borderRadius:20,backgroundColor:"green",height:50,width:50,borderRadius:25}}>
+                       
+                            </View>
+                            <View>
+                            <Text >{data.user.name}</Text>
+                            <Text>{data.likes}</Text>
+                            </View>
+                        </View></View>):<View/>}
+                      
+                    }
                         
                     />
                 </View>
