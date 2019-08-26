@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, ActivityIndicator,TouchableWithoutFeedback,Image,Linking} from 'react-native';
-import { SearchBar } from 'react-native-elements';
+import { View, Text, ActivityIndicator, TouchableWithoutFeedback, Linking } from 'react-native';
+import { SearchBar, Image, Card, Avatar } from 'react-native-elements';
 import MasonryList from "react-native-masonry-list";
-import overlayComponent from './overlayComponent';
+import OverlayComponent from './overlayComponent';
 
 
 
@@ -15,13 +15,38 @@ export default class ImageRender extends Component {
             data: "",
             isLoading: true,
             onEndReached: true,
-            id:"",
-            pageNumber:1,
+            id: "",
+            pageNumber: 1,
         };
     }
 
-    componentDidMount() {
-        fetch('https://api.unsplash.com/photos/?client_id=27188885043579c212fdbf88c97812be03382d3a0e2b2f986dfa2b0719897d0a&page=1')
+    // componentDidMount() {
+
+    //     fetch('https://api.unsplash.com/photos/search?client_id=27188885043579c212fdbf88c97812be03382d3a0e2b2f986dfa2b0719897d0a&query=car')
+    //         .then((response) => response.json())
+    //         .then((responseJson) => {
+    //             console.log("data from api,=>", responseJson);
+    //             var imagedata = [];
+    //             responseJson.forEach(element => {
+    //                 imagedata.push(element)
+
+    //             });
+    //             console.log("data image is=>", imagedata)
+
+    //             this.setState({
+    //                 data: imagedata,
+    //                 isLoading: false
+    //             })
+    //         })
+    //         .catch((error) => {
+    //             console.error(error);
+    //         });
+    // }
+
+    updateSearch = () => {
+
+        console.log("search string is" + this.state.search);
+        fetch('https://api.unsplash.com/photos/search?client_id=27188885043579c212fdbf88c97812be03382d3a0e2b2f986dfa2b0719897d0a&query=' + this.state.search)
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log("data from api,=>", responseJson);
@@ -40,24 +65,22 @@ export default class ImageRender extends Component {
             .catch((error) => {
                 console.error(error);
             });
-    }
 
-    updateSearch = search => {
-        this.setState({ search });
     };
+
+    updateText = search => {
+        this.setState({ search });
+    }
 
 
     loadMoreData() {
-
-        console.log("control is comming or not")
-        fetch('https://api.unsplash.com/photos/?client_id=27188885043579c212fdbf88c97812be03382d3a0e2b2f986dfa2b0719897d0a&page=2')
+        fetch('https://api.unsplash.com/photos/search?client_id=27188885043579c212fdbf88c97812be03382d3a0e2b2f986dfa2b0719897d0a&query=' + this.state.search + '&page=' + this.state.pageNumber++)
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log("data from api,=>", responseJson);
                 var imagedata = [];
                 responseJson.forEach(element => {
                     imagedata.push(element)
-
                 });
                 console.log("data image is=>", imagedata)
 
@@ -77,75 +100,69 @@ export default class ImageRender extends Component {
         return this.state.data.map((element) => {
             return ({
                 uri: element.urls.thumb,
-                id:element.id,
-                user:element.user,
-                likes:element.likes
+                id: element.id,
+                user: element.user,
+                likes: element.likes
             })
 
         });
     }
 
-    _onLongPress=(index,id,user)=>{
-        this.setState({id:index})
+    _onLongPress = (index, id, user) => {
+        this.setState({ id: index })
 
-        console.log("this is one",user);
+        console.log("this is one", user);
         return (
-            <overlayComponent/>
+            <overlayComponent />
         );
 
     }
-    renderCostomeComponent(){
+    renderCostomeComponent() {
         return (
-           <Image >
-               <Text>hello</Text>
-           </Image>
+            <Image >
+                <Text>hello</Text>
+            </Image>
         )
     }
     render() {
         const { search, data } = this.state;
-        return this.state.isLoading ? <ActivityIndicator size={25} /> :
-            (
-                <View style={{ flex: 1 }}>
-                    <Text> Image_render </Text>
-                    <SearchBar
-                        placeholder="Type Here..."
-                        onChangeText={this.updateSearch}
-                        value={search}
-                    />
-                    <MasonryList
-                        
-                        
-                        images={this.renderImage()}
-                        // rerender={true}
+        return (
+            <View style={{ flex: 1 }}>
+                <SearchBar
+                    placeholder="Type Here..."
+                    onChangeText={this.updateText}
+                    value={search}
+                    onSubmitEditing={this.updateSearch}
+                />
+                <MasonryList
+                    images={this.state.isLoading ? [] : this.renderImage()}
+                    // rerender={true}
 
-                        masonryFlatListColProps={{onEndReached: this.loadMoreData}}
-                        onEndReachedThreshold={0.5}
-                        onLongPressImage = {(item, index)=>this._onLongPress(index,item.id,item.user)}
+                    masonryFlatListColProps={{ onEndReached: this.loadMoreData }}
+                    onEndReachedThreshold={0.5}
+                    onLongPressImage={(item, index) => this._onLongPress(index, item.id, item.user)}
+                    onPressImage={(item, index) => this._onLongPress(index, item.id, item.user)}
 
-                        // completeCustomComponent={({  user, style={width:100,height:100,margin:5}, user }) => <Text>{user.id}</Text>}
-                        // completeCustomComponent= {
-                        //     this.state.id?
-                            
-                        //     (item, style={width:100,height:100,margin:5},index) =>index==this.state.id? <View style={{flex:1,backgroundColor:"transparent"}}>
-                        //     <View>
-                        //     <Text>hellpo</Text>
-                        //     </View>
-                        // </View>:null:null }
-                        
-                        renderIndividualHeader={(data,index)=>  {return  this.state.id==index ?(<View style={{position:"absolute",height:"100%",width:"100%",left:0,justifyContent:"center",alignItems:"center"}}><View style={{flexDirection:"row",justifyContent:"center",alignItems:"center",borderWidth:1,borderRadius:4}}>
-                            <View style={{borderRadius:20,backgroundColor:"green",height:50,width:50,borderRadius:25}}>
-                       
-                            </View>
-                            <View>
-                            <Text >{data.user.name}</Text>
-                            <Text>{data.likes}</Text>
-                            </View>
-                        </View></View>):<View/>}
-                      
+                    // completeCustomComponent={({  user, style={width:100,height:100,margin:5}, user }) => <Text>{user.id}</Text>}
+                    // completeCustomComponent= {
+                    //     this.state.id?
+
+                    //     (item, style={width:100,height:100,margin:5},index) =>index==this.state.id? <View style={{flex:1,backgroundColor:"transparent"}}>
+                    //     <View>
+                    //     <Text>hellpo</Text>
+                    //     </View>
+                    // </View>:null:null }
+
+                    renderIndividualHeader={(data, index) => {
+                        return this.state.id == index ? (
+                            <OverlayComponent data={data} />) : <View />
                     }
-                        
-                    />
-                </View>
-            );
+                    }
+
+                />
+            </View>
+
+
+        );
     }
 }
