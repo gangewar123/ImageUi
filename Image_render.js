@@ -51,6 +51,7 @@ export default class ImageRender extends Component {
 
     updateText = search => {
         this.setState({ search });
+        
     }
 
 
