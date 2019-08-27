@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
-import ImageRender from './Image_render';
-import Detail_screen from './Detail_screen'
-import {  createAppContainer, createStackNavigator } from 'react-navigation';
-import RootNavigator from "./navigation";
+import { View } from 'react-native'
+import RootNavigator from "./components/navigation.js";
 
 
 export default class App extends Component {

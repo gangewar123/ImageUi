@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Text, View, ActivityIndicator } from 'react-native'
-import MasonryList from "react-native-masonry-list";
-import OverlayComponent from './overlayComponent';
-import Header from './HeaderComponent';
+import { View, ActivityIndicator } from 'react-native'
+import MasonryList from 'react-native-masonry-list';
+import OverlayComponent from '../overlayComponent';
+import Header from '../HeaderComponent';
 
 
 
@@ -11,7 +11,7 @@ export default class Detail_screen extends Component {
         super(props);
         this.loadMoreData = this.loadMoreData.bind(this)
         this.state = {
-            search: '',
+            search: "",
             data: "",
             isLoading: true,
             onEndReached: true,
@@ -60,13 +60,10 @@ export default class Detail_screen extends Component {
         fetch(`https://api.unsplash.com/users/${userName}/photos?client_id=27188885043579c212fdbf88c97812be03382d3a0e2b2f986dfa2b0719897d0a&page=${this.state.pageNumber++}`)
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log("data from api,=>", responseJson);
                 var imagedata = [];
                 responseJson.forEach(element => {
                     imagedata.push(element)
-                });
-                console.log("user image next page=>", imagedata)
-
+                });  
                 this.setState({
                     data: this.state.data.concat(imagedata),
                     isLoading: false
