@@ -25,8 +25,8 @@ export default class OverlayComponent extends Component {
             }}
           />
 
-          <View>
-            <Text style={styles.textColor}>{this.props.data.user.name}</Text>
+          <View style={{padding:10}}>
+            <Text style={styles.textColor} >{this.props.data.user.first_name}...</Text>
             <View style={styles.rowContainer}>
               <Icon name='heart' type='font-awesome' color='#ffffff' />
               <Text style={styles.textColor}>{this.props.data.likes}</Text>
@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    padding:5,
     borderWidth: 1,
     borderRadius: 4,
     backgroundColor: "black"

@@ -7,6 +7,10 @@ import OverlayComponent from './overlayComponent';
 
 
 export default class ImageRender extends Component {
+
+    static navigationOptions = {
+        header: null,
+    }
     constructor(props) {
         super(props);
         this.loadMoreData = this.loadMoreData.bind(this)
@@ -19,52 +23,29 @@ export default class ImageRender extends Component {
             pageNumber: 1,
         };
     }
-
-    // componentDidMount() {
-
-    //     fetch('https://api.unsplash.com/photos/search?client_id=27188885043579c212fdbf88c97812be03382d3a0e2b2f986dfa2b0719897d0a&query=car')
-    //         .then((response) => response.json())
-    //         .then((responseJson) => {
-    //             console.log("data from api,=>", responseJson);
-    //             var imagedata = [];
-    //             responseJson.forEach(element => {
-    //                 imagedata.push(element)
-
-    //             });
-    //             console.log("data image is=>", imagedata)
-
-    //             this.setState({
-    //                 data: imagedata,
-    //                 isLoading: false
-    //             })
-    //         })
-    //         .catch((error) => {
-    //             console.error(error);
-    //         });
-    // }
-
     updateSearch = () => {
 
         console.log("search string is" + this.state.search);
-        fetch('https://api.unsplash.com/photos/search?client_id=27188885043579c212fdbf88c97812be03382d3a0e2b2f986dfa2b0719897d0a&query=' + this.state.search)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                console.log("data from api,=>", responseJson);
-                var imagedata = [];
-                responseJson.forEach(element => {
-                    imagedata.push(element)
+        if (this.state.search != null)
+            fetch('https://api.unsplash.com/photos/search?client_id=27188885043579c212fdbf88c97812be03382d3a0e2b2f986dfa2b0719897d0a&query=' + this.state.search)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    console.log("data from api,=>", responseJson);
+                    var imagedata = [];
+                    responseJson.forEach(element => {
+                        imagedata.push(element)
 
-                });
-                console.log("data image is=>", imagedata)
+                    });
+                    console.log("data image is=>", imagedata)
 
-                this.setState({
-                    data: imagedata,
-                    isLoading: false
+                    this.setState({
+                        data: imagedata,
+                        isLoading: false
+                    })
                 })
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+                .catch((error) => {
+                    console.error(error);
+                });
 
     };
 
@@ -141,7 +122,7 @@ export default class ImageRender extends Component {
                     masonryFlatListColProps={{ onEndReached: this.loadMoreData }}
                     onEndReachedThreshold={0.5}
                     onLongPressImage={(item, index) => this._onLongPress(index, item.id, item.user)}
-                    onPressImage={(item, index) => this._onLongPress(index, item.id, item.user)}
+                    onPressImage={(item) => this.props.navigation.navigate("detailScreen", { name: item.user.username })}
 
                     // completeCustomComponent={({  user, style={width:100,height:100,margin:5}, user }) => <Text>{user.id}</Text>}
                     // completeCustomComponent= {

@@ -3,7 +3,8 @@
  */
 
 import {AppRegistry} from 'react-native';
-import ImageRender from './Image_render';
 import {name as appName} from './app.json';
+import App from './App';
 
-AppRegistry.registerComponent(appName, () => ImageRender);
+
+AppRegistry.registerComponent(appName, () => App);
