@@ -22,7 +22,16 @@ export default class Detail_screen extends Component {
     }
 
     static navigationOptions = ({ navigation }) => {
-        return { headerTitle: <Header name={navigation.getParam("user")} /> }
+        return {
+            headerTitle: <Header name={navigation.getParam("user")} />,
+            headerStyle: {
+                backgroundColor: '#36bff5',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+        }
 
     }
 
@@ -30,7 +39,7 @@ export default class Detail_screen extends Component {
         var userName = this.props.navigation.state.params.name
 
         console.log("component name is===>", userName);
-            this.props.navigation.setParams({ user: userName });
+        this.props.navigation.setParams({ user: userName });
         fetch(`https://api.unsplash.com/users/${userName}/photos?client_id=27188885043579c212fdbf88c97812be03382d3a0e2b2f986dfa2b0719897d0a`)
             .then((response) => response.json())
             .then((responseJson) => {
@@ -63,7 +72,7 @@ export default class Detail_screen extends Component {
                 var imagedata = [];
                 responseJson.forEach(element => {
                     imagedata.push(element)
-                });  
+                });
                 this.setState({
                     data: this.state.data.concat(imagedata),
                     isLoading: false

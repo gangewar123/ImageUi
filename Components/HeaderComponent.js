@@ -19,7 +19,7 @@ var styles = StyleSheet.create({
   },
   textStyle: {
     fontWeight: "bold",
-    paddingLeft: 10
-
+    paddingLeft: 10,
+    color: "white"
   }
 });

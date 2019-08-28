@@ -5,7 +5,9 @@ import { createAppContainer, createStackNavigator } from 'react-navigation';
 const applicationLayer = createStackNavigator(
   {
     ImageRender: { screen: ImageRender },
-    detailScreen: { screen: Detail_screen },
+    detailScreen: {
+      screen: Detail_screen
+    },
   }
 );
 

@@ -13,7 +13,7 @@ export default class OverlayComponent extends Component {
       <View style={styles.absolutePosition}>
         <View style={styles.mainContainer}>
           <Avatar
-            size="large"
+            size="small"
             overlayContainerStyle={{ backgroundColor: 'black' }}
             color="white"
             rounded

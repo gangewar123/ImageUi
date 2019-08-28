@@ -3,6 +3,7 @@ import { View, Text, ActivityIndicator } from 'react-native';
 import MasonryList from "react-native-masonry-list";
 import OverlayComponent from '../overlayComponent';
 import { TextInput } from 'react-native-gesture-handler';
+import Splash_screen from './Splash_screen';
 
 export default class ImageRender extends Component {
     static navigationOptions = {
@@ -98,17 +99,20 @@ export default class ImageRender extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ padding: 5 }}>
-                    <View style={{ padding: 10, borderColor: 'gray', borderWidth: 1, marginBottom: 4, borderRadius: 10 }}>
-                        <Text style={{ fontWeight: "bold", fontSize: 18, paddingBottom: 5 }}>Image Search</Text>
+                    <View style={{ padding: 10, borderColor: 'gray', borderWidth: 1, marginBottom: 4, borderRadius: 10, backgroundColor: "#36bff5" }}>
+                        <Text style={{ fontWeight: "bold", fontSize: 18, paddingBottom: 5, color: "white" }}>Search images</Text>
                         <TextInput
+
                             onChangeText={this.updateText}
                             value={search}
-                            style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                            style={{ height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white", borderRadius: 10, }}
                             onSubmitEditing={this.updateSearch}
-                            placeholder="Eg. Cat, Bike"
+                            placeholder="e.g. cat, dog, etc..."
                             clearTextOnFocus={true}
                         />
                     </View>
+                    {this.state.isLoading ? <Splash_screen /> : <View />}
+
                 </View>
                 {
                     this.state.isDataLoaded ?
