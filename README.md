@@ -18,6 +18,9 @@ then run
 ```
 ImageUI>react-native run-android
 ```
+## Shots
+<img src="https://github.com/gangewar123/ImageUi/blob/master/Shots/ImageUi.gif" width="350" title="hover text">
+
 ## Built With
 
 * [React-native](https://facebook.github.io/react-native/) - The Hybrid-app framework used
