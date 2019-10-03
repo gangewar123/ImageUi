@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
-import { View, ActivityIndicator } from 'react-native'
+import { View, ActivityIndicator, Modal, Text } from 'react-native'
 import MasonryList from 'react-native-masonry-list';
 import OverlayComponent from '../overlayComponent';
 import Header from '../HeaderComponent';
+import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
 
 
 
 export default class Detail_screen extends Component {
     constructor(props) {
         super(props);
-        this.loadMoreData = this.loadMoreData.bind(this)
+        this.loadMoreData = this.loadMoreData.bind(this);
+        this._showModal = this._showModal.bind(this);
         this.state = {
             search: "",
             data: "",
@@ -17,20 +19,19 @@ export default class Detail_screen extends Component {
             onEndReached: true,
             id: "",
             pageNumber: 1,
-            user: ""
+            user: "",
+            modalVisible: false
         };
     }
 
     static navigationOptions = ({ navigation }) => {
         return {
-            headerTitle: <Header name={navigation.getParam("user")} />,
+            headerTitle: <Header name={navigation.getParam("user")
+            } />,
             headerStyle: {
                 backgroundColor: '#36bff5',
             },
             headerTintColor: '#fff',
-            headerTitleStyle: {
-                fontWeight: 'bold',
-            },
         }
 
     }
@@ -88,6 +89,33 @@ export default class Detail_screen extends Component {
         this.setState({ id: index })
     }
 
+    _showModal(visible) {
+        this.setState({ modalVisible: visible });
+    }
+    renderModal = () => {
+        return (<Modal
+            animationType={'slide'}
+            transparent={false}
+            visible={this.state.modalVisible}
+            onRequestClose={() => {
+                alert('Modal has been closed.');
+            }}>
+            <View style={{ marginTop: 22 }}>
+                <View>
+                    <Text>Hello World!</Text>
+                    <TouchableOpacity
+                        onPress={
+
+                            this._showModal(!this.state.modalVisible)}
+                    >
+                        <Text>Hide Modal</Text>
+                    </TouchableOpacity>
+                </View>
+
+            </View>
+        </Modal>);
+    }
+
     renderImage() {
 
         return this.state.data.map((element) => {
@@ -109,18 +137,42 @@ export default class Detail_screen extends Component {
                 />
             </View>
             : (
-                <MasonryList
-                    images={this.state.isLoading ? [] : this.renderImage()}
-                    masonryFlatListColProps={{ onEndReached: this.loadMoreData }}
-                    onEndReachedThreshold={0.5}
-                    onLongPressImage={(item, index) => this._onLongPress(index, item.id, item.user)}
-                    // onPressImage={() => this.props.navigation.navigate("detailScreen")}
-                    renderIndividualHeader={(data, index) => {
-                        return this.state.id == index ? (
-                            <OverlayComponent data={data} />) : <View />
-                    }
-                    }
-                />
+                <View style={{ flex: 1 }}>
+                    <Modal
+                        animationType={'slide'}
+                        transparent={false}
+                        visible={this.state.modalVisible}
+                        onRequestClose={() => {
+                            alert('Modal has been closed.');
+                        }}>
+                        <View style={{ marginTop: 22 }}>
+                            <View>
+                                <Text>Hello World!</Text>
+                                <TouchableOpacity
+                                    onPress={
+
+                                        this._showModal(!this.state.modalVisible)}
+                                >
+                                    <Text>Hide Modal</Text>
+                                </TouchableOpacity>
+                            </View>
+
+                        </View>
+                    </Modal>
+                    <MasonryList
+                        images={this.state.isLoading ? [] : this.renderImage()}
+                        masonryFlatListColProps={{ onEndReached: this.loadMoreData }}
+                        onEndReachedThreshold={0.5}
+                        onLongPressImage={(item, index) => this._onLongPress(index, item.id, item.user)}
+                        onPressImage={() => this._showModal(true)}
+                        renderIndividualHeader={(data, index) => {
+                            return this.state.id == index ? (
+                                <OverlayComponent data={data} />
+                            ) : <View />
+                        }
+                        }
+                    />
+                </View>
             )
     }
 }

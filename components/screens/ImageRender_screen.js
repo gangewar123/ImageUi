@@ -62,13 +62,13 @@ export default class ImageRender extends Component {
             .then((responseJson) => {
                 console.log("data from api,=>", responseJson);
                 var imagedata = [];
-                responseJson.forEach(element => {
+                responseJson.map(element => {
                     imagedata.push(element)
                 });
                 console.log("data image is=>", imagedata)
 
                 this.setState({
-                    data: this.state.data.concat(imagedata),
+                    data: this.state.data.concat(responseJson),
                     isLoading: false
                 })
             })
