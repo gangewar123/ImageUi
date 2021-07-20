@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "react": "16.8.6",
-    "react-native": "0.60.5",
+    "react-native": "0.62.3",
     "react-native-elements": "^1.1.0",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-masonry-list": "^2.13.0",
