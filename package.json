@@ -13,7 +13,7 @@
     "react-native-elements": "^1.1.0",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-masonry-list": "^2.13.0",
-    "react-native-reanimated": "^1.2.0",
+    "react-native-reanimated": "^2.10.0",
     "react-native-vector-icons": "6.6.0",
     "react-navigation": "^3.12.0"
   },
